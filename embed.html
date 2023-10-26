@@ -1,0 +1,92 @@
+<script src="https://unpkg.com/@superset-ui/embedded-sdk"></script>
+
+<style>
+  iframe {
+      height: 100%;
+      width: 100%;
+      /* border: none; */
+  }
+</style>
+<div id="my-superset-container" style="
+height: 360px;
+width: 1000px;">
+
+  
+
+</div>
+<br/>
+<!-- <iframe
+  width="200"
+  height="400"
+  seamless
+  frameBorder="0"
+  scrolling="no"
+  src="http://localhost:8088/superset/explore/p/WpnbArVMr5m/?standalone=1&height=400"
+>
+<br/>
+</iframe>
+<iframe
+  width="200"
+  height="400"
+  seamless
+  frameBorder="0"
+  scrolling="no"
+  src="http://localhost:8088/embedded/f2219c48-73b5-4300-9284-a07f98ebe7d8?uiConfig=9&expand_filters=false"
+>
+</iframe> -->
+<script>
+// FIRST_NAMER=Supserset
+// LAST_NAME=Admin
+// const embed_dashboard = '629e8c62-65fb-4e84-ae71-b35e594f58a6'
+const embed_dashboard = 'f2219c48-73b5-4300-9284-a07f98ebe7d8'
+
+
+
+        async function fetchGuestTokenFromBackend() {
+            let response = await fetch('https://7dde-2405-201-4046-202a-b12e-897-30a1-8835.ngrok-free.app/dashboard/fetchGuestToken', {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST", body: JSON.stringify(
+                    {
+                        'username': 'admin', 
+                        'first_name': 'Supserset',
+                        'last_name': 'Admin', 
+                        'dashboard_id': embed_dashboard,
+                         'rls': ''
+                    }
+                )
+            })
+            let data = await response.json()
+            return data['token']
+        }
+        const myDashboard = supersetEmbeddedSdk.embedDashboard({
+            id: embed_dashboard,
+            supersetDomain: "http://localhost:8088/",
+            mountPoint: document.getElementById("my-superset-container"),
+            // iframeAttributes: {"id": "my-test-frame", "className": "my-test-frame-class"},
+            fetchGuestToken: () => fetchGuestTokenFromBackend(),
+            dashboardUiConfig: { hideTitle: true, hideChartControls: true,
+              filters: {
+                expanded: false,
+              }}
+        });
+  // supersetEmbeddedSdk.embedDashboard({
+  //   // ... here you supply the same parameters as in the example above
+  //   id: embed_dashboard, // given by the Superset embedding UI
+  // supersetDomain: "https://localhost:8088",
+  // mountPoint: document.getElementById("my-superset-container"), // any html element that can contain an iframe
+  // fetchGuestToken: () => fetchGuestTokenFromBackend(),
+  // dashboardUiConfig: { // dashboard UI config: hideTitle, hideTab, hideChartControls, filters.visible, filters.expanded (optional)
+  //     hideTitle: true,
+  //     filters: {
+  //         expanded: true,
+  //     }
+  // }
+  // });
+</script>
+<html>
+
+
+</html>
