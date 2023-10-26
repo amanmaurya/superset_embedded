@@ -23,3 +23,4 @@ SUPERSET_DOMAIN=http://localhost:8088/
 ```bash
  run uvicorn main:app --reload
 ```
+>python -m uvicorn main:app --reload
