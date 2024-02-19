@@ -40,11 +40,14 @@ def authenticate(
 
 def get_guest_token_for_dashboard(
     dashboard_id,
-    access_token,
+    access_token,country_name,
     username=USERNAME,
     first_name=FIRST_NAMER,
     last_name=LAST_NAME,
+    
 ):
+    cls="country_name='{}'".format(country_name)
+    print(cls)
     response = requests.post(
         URL_GUEST_TOKEN,
         data=json.dumps(
@@ -58,9 +61,10 @@ def get_guest_token_for_dashboard(
                     {
                         "type": "dashboard",
                         "id": dashboard_id,
+                       
                     }
                 ],
-                "rls": [],
+                "rls":  [{"clause":cls}],
             }
         ),
         headers={
